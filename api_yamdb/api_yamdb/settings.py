@@ -21,6 +21,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'reviews',
+    'core',
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -101,3 +104,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
+
+AUTH_USER_MODEL = 'reviews.User'
+
+
+ALREDY_LOADED_ERROR_MESSAGE = """
+If you need to reload data from the CSV file,
+first delete the db.sqlite3 file to destroy the database.
+Then, run `python manage.py migrate` for a new empty
+database with tables"""

@@ -21,6 +21,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'django_filters',
     'reviews',
     'core',
     'api'
@@ -113,3 +115,5 @@ If you need to reload data from the CSV file,
 first delete the db.sqlite3 file to destroy the database.
 Then, run `python manage.py migrate` for a new empty
 database with tables"""
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

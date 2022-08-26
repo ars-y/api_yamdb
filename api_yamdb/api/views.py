@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from reviews.models import User
 from .serializers import (
     UserSerializer,
@@ -8,15 +8,38 @@ from .serializers import (
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.shortcuts import get_object_or_404
+from .permissions import AdminPermission
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (AdminPermission,)
+    lookup_field = "username"
+
+    @action(
+        methods=["GET", "PATCH"],
+        detail=False,
+        permission_classes=[permissions.IsAuthenticated],
+    )
+    def me(self, request):
+        serializer = UserSerializer(request.user)
+        if request.method == "PATCH":
+            serializer = UserSerializer(
+                request.user,
+                data=request.data,
+                partial=True
+            )
+            if serializer.is_valid():
+                serializer.validated_data['role'] = request.user.role
+                serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 

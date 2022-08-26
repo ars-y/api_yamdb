@@ -3,13 +3,15 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from core.models import CreatedModel
-from api.managers import CustomUserManager
 
+USER = 'user'
+MODERATOR = 'moderator'
+ADMIN = 'admin'
 
 CHOICES = (
-    ('Moderator', 'Модератор'),
-    ('Admin', 'Админ'),
-    ('User', 'Пользователь')
+    (MODERATOR, 'Модератор'),
+    (ADMIN, 'Админ'),
+    (USER, 'Пользователь')
 )
 
 
@@ -22,7 +24,6 @@ class User(AbstractUser):
     username = models.CharField(
         verbose_name='Имя пользователя',
         max_length=150,
-        null=True,
         unique=True
     )
     bio = models.TextField(
@@ -32,11 +33,9 @@ class User(AbstractUser):
     role = models.CharField(
         'Роли',
         max_length=30,
-        default='User',
+        default='user',
         choices=CHOICES
     )
-
-    objects = CustomUserManager()
 
     class Meta:
         constraints = [
@@ -46,11 +45,15 @@ class User(AbstractUser):
 
     @property
     def is_admin(self):
-        return self.role == self.Admin
+        return self.role == ADMIN
 
     @property
     def is_moderator(self):
-        return self.role == self.Moderator
+        return self.role == MODERATOR
+
+    @property
+    def is_user(self):
+        return self.role == USER
 
     def __str__(self):
         return self.username

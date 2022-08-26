@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from core.models import CreatedModel
+from api.managers import CustomUserManager
 
 
 CHOICES = (
@@ -31,12 +32,28 @@ class User(AbstractUser):
     role = models.CharField(
         'Роли',
         max_length=30,
+        default='User',
         choices=CHOICES
     )
 
+    objects = CustomUserManager()
+
     class Meta:
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['username', 'email'], name='unique_user')
+        ]
+
+    @property
+    def is_admin(self):
+        return self.role == self.Admin
+
+    @property
+    def is_moderator(self):
+        return self.role == self.Moderator
+
+    def __str__(self):
+        return self.username
 
 
 class Category(models.Model):

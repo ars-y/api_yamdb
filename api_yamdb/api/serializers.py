@@ -8,4 +8,15 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    pass
+    author = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='username'
+    )
+    title = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='text'
+    )
+
+    class Meta:
+        model = Comment
+        fields = '__all__'

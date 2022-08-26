@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
 
 from reviews.models import Review, Comment
 from api.permissions import AuthorOrReadOnly
@@ -21,7 +22,13 @@ class CommentViewset(viewsets.ModelViewSet):
     permission_classes = [AuthorOrReadOnly]
 
     def get_queryset(self):
-        pass
+        review = get_object_or_404(Review, pk=self.kwargs.get('review_id'))
+        return review.comments
 
     def perform_create(self, serializer):
-        pass
+        review = get_object_or_404(
+            Review,
+            pk=self.kwargs.get('review_id'),
+            title=self.kwargs.get('title_id')
+        )
+        serializer.save(author=self.request.user, review=review)

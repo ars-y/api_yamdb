@@ -1,10 +1,4 @@
 from rest_framework import viewsets, permissions
-from reviews.models import User
-from .serializers import (
-    UserSerializer,
-    UserRegistrationSerializer,
-    UserGetTokenSerializer
-)
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 from rest_framework.response import Response
@@ -13,7 +7,18 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.shortcuts import get_object_or_404
-from .permissions import AdminPermission
+from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
+
+from reviews.models import User, Review, Title
+from api.permissions import AdminPermission
+from api.serializers import (
+    UserSerializer,
+    UserRegistrationSerializer,
+    UserGetTokenSerializer,
+    ReviewSerializer,
+    CommentSerializer
+)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -83,3 +88,32 @@ class UserGetTokenView(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+
+
+class ReviewViewset(viewsets.ModelViewSet):
+    serializer_class = ReviewSerializer
+    permission_classes = [AuthorOrReadOnly]
+
+    def get_queryset(self):
+        title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
+        return title.reviews
+
+    def perform_create(self, serializer):
+        pass
+
+
+class CommentViewset(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
+    permission_classes = [AuthorOrReadOnly]
+
+    def get_queryset(self):
+        review = get_object_or_404(Review, pk=self.kwargs.get('review_id'))
+        return review.comments
+
+    def perform_create(self, serializer):
+        review = get_object_or_404(
+            Review,
+            pk=self.kwargs.get('review_id'),
+            title=self.kwargs.get('title_id')
+        )
+        serializer.save(author=self.request.user, review=review)

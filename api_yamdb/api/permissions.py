@@ -27,3 +27,4 @@ class IsAuthorAdminModerOrReadOnly(permissions.BasePermission):
                         and (request.user.is_moder or request.user.is_admin))
                     )
                 )
+                

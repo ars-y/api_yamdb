@@ -4,11 +4,14 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 from core.models import CreatedModel
 
+USER = 'user'
+MODERATOR = 'moderator'
+ADMIN = 'admin'
 
 CHOICES = (
-    ('Moderator', 'Модератор'),
-    ('Admin', 'Админ'),
-    ('User', 'Пользователь')
+    (MODERATOR, 'Модератор'),
+    (ADMIN, 'Админ'),
+    (USER, 'Пользователь')
 )
 
 
@@ -21,7 +24,6 @@ class User(AbstractUser):
     username = models.CharField(
         verbose_name='Имя пользователя',
         max_length=150,
-        null=True,
         unique=True
     )
     bio = models.TextField(
@@ -31,12 +33,30 @@ class User(AbstractUser):
     role = models.CharField(
         'Роли',
         max_length=30,
+        default='user',
         choices=CHOICES
     )
 
     class Meta:
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['username', 'email'], name='unique_user')
+        ]
+
+    @property
+    def is_admin(self):
+        return self.role == ADMIN
+
+    @property
+    def is_moderator(self):
+        return self.role == MODERATOR
+
+    @property
+    def is_user(self):
+        return self.role == USER
+
+    def __str__(self):
+        return self.username
 
 
 class Category(models.Model):

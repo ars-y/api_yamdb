@@ -18,8 +18,8 @@ CHOICES = (
 class User(AbstractUser):
     """Модель пользователя."""
     email = models.EmailField(
-        'Почта',
-        unique=True,
+        verbose_name='Почта',
+        unique=True
     )
     username = models.CharField(
         verbose_name='Имя пользователя',
@@ -27,11 +27,11 @@ class User(AbstractUser):
         unique=True
     )
     bio = models.TextField(
-        'Биография',
-        blank=True,
+        verbose_name='Биография',
+        blank=True
     )
     role = models.CharField(
-        'Роли',
+        verbose_name='Роли',
         max_length=30,
         default='user',
         choices=CHOICES
@@ -62,13 +62,13 @@ class User(AbstractUser):
 class Category(models.Model):
     """Модель категории."""
     name = models.CharField(
-        max_length=256,
         verbose_name='Категория',
+        max_length=256
     )
     slug = models.SlugField(
-        unique=True,
-        max_length=50,
         verbose_name='Идентификатор',
+        unique=True,
+        max_length=50
     )
 
     class Meta:
@@ -83,13 +83,13 @@ class Category(models.Model):
 class Genre(models.Model):
     """Модель жанра."""
     name = models.CharField(
-        max_length=256,
         verbose_name='Жанр',
+        max_length=256
     )
     slug = models.SlugField(
-        unique=True,
-        max_length=50,
         verbose_name='Идентификатор',
+        unique=True,
+        max_length=50
     )
 
     class Meta:
@@ -104,28 +104,28 @@ class Genre(models.Model):
 class Title(models.Model):
     """Модель произведения."""
     name = models.CharField(
-        max_length=200,
         verbose_name='Имя произведения',
+        max_length=200
     )
     year = models.PositiveIntegerField(
-        db_index=True,
         verbose_name='Год',
+        db_index=True
     )
     description = models.TextField(
-        null=True,
         verbose_name='Описание',
+        null=True
     )
     genre = models.ManyToManyField(
         Genre,
-        blank=True,
         verbose_name='Жанр',
+        blank=True
     )
     category = models.ForeignKey(
         Category,
+        verbose_name='Категория',
         on_delete=models.SET_NULL,
         null=True,
-        blank=True,
-        verbose_name='Категория',
+        blank=True
     )
 
     class Meta:
@@ -159,15 +159,15 @@ class Review(CreatedModel):
     """Модель отзывов."""
     author = models.ForeignKey(
         User,
-        on_delete=models.CASCADE,
         verbose_name='Автор',
         related_name='reviews',
+        on_delete=models.CASCADE
     )
     title = models.ForeignKey(
         Title,
-        on_delete=models.CASCADE,
         verbose_name='Произведение',
         related_name='reviews',
+        on_delete=models.CASCADE
     )
     text = models.TextField(
         verbose_name='Текст отзыва',
@@ -200,15 +200,15 @@ class Comment(CreatedModel):
     """Модель комментария."""
     author = models.ForeignKey(
         User,
-        on_delete=models.CASCADE,
         verbose_name='Автор',
         related_name='comments',
+        on_delete=models.CASCADE
     )
     review = models.ForeignKey(
         Review,
-        on_delete=models.CASCADE,
         verbose_name='Отзыв',
         related_name='comments',
+        on_delete=models.CASCADE
     )
     text = models.TextField(
         verbose_name='Текст комментария',

@@ -14,10 +14,12 @@ class Command(BaseCommand):
             print(ALREDY_LOADED_ERROR_MESSAGE)
             return
 
-        for row in DictReader(open('static/data/genre_title.csv', 'r', encoding='utf-8')):
-            review=GenreTitle(
+        for row in DictReader(
+            open('static/data/genre_title.csv', 'r', encoding='utf-8')
+        ):
+            review = GenreTitle(
                 id=row['id'],
                 title=Title.objects.get(pk=int(row['title_id'])),
                 genre=Genre.objects.get(pk=int(row['genre_id']))
-            )  
+            )
             review.save()

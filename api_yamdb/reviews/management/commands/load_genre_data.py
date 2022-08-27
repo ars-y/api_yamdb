@@ -14,10 +14,12 @@ class Command(BaseCommand):
             print(ALREDY_LOADED_ERROR_MESSAGE)
             return
 
-        for row in DictReader(open('static/data/genre.csv', 'r', encoding='utf-8')):
-            review=Genre(
+        for row in DictReader(
+            open('static/data/genre.csv', 'r', encoding='utf-8')
+        ):
+            review = Genre(
                 id=row['id'],
                 name=row['name'],
                 slug=row['slug']
-            )  
+            )
             review.save()

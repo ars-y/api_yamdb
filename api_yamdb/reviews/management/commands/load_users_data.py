@@ -14,8 +14,10 @@ class Command(BaseCommand):
             print(ALREDY_LOADED_ERROR_MESSAGE)
             return
 
-        for row in DictReader(open('static/data/users.csv', 'r', encoding='utf-8')):
-            review=User(
+        for row in DictReader(
+            open('static/data/users.csv', 'r', encoding='utf-8')
+        ):
+            review = User(
                 id=row['id'],
                 username=row['username'],
                 email=row['email'],
@@ -23,5 +25,5 @@ class Command(BaseCommand):
                 bio=row['bio'],
                 first_name=row['first_name'],
                 last_name=row['last_name']
-            )  
+            )
             review.save()

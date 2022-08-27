@@ -120,14 +120,15 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
 AUTH_USER_MODEL = 'reviews.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-# указываем директорию, в которую будут складываться файлы писем
+
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails') 
 
 ALREDY_LOADED_ERROR_MESSAGE = """
-If you need to reload data from the CSV file,
-first delete the db.sqlite3 file to destroy the database.
-Then, run `python manage.py migrate` for a new empty
-database with tables"""
+Если необходимо перезагрузить данные из csv файла,
+то сначала нужно удалить файл db.sqlite3,
+после запустить команду `python manage.py migrate`
+для создания новой, пустой БД.
+"""
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -138,7 +139,6 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    # Устанавливаем срок жизни токена
    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
    'AUTH_HEADER_TYPES': ('Bearer',),
 }

@@ -17,12 +17,14 @@ from api.serializers import (
     CategorySerializer,
     GenreSerializer,
     TitleGetSerializer,
-    TitlePostSerializer
+    TitlePostSerializer,
+    ReviewSerializer,
+    CommentSerializer
 )
-from api.permissions import AdminPermission, AdminSuperOrReadOnly
+from api.permissions import AdminPermission, AdminSuperOrReadOnly, IsAuthorAdminModerOrReadOnly
 from api.mixins import MixinSet
 from api.filters import TitleFilter
-from reviews.models import User, Category, Genre, Title
+from reviews.models import User, Category, Genre, Title, Review
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -121,3 +123,32 @@ class TitleViewSet(viewsets.ModelViewSet):
         if self.request.method in ['POST', 'PATCH']:
             return TitlePostSerializer
         return TitleGetSerializer
+
+
+class ReviewViewset(viewsets.ModelViewSet):
+    serializer_class = ReviewSerializer
+    permission_classes = [IsAuthorAdminModerOrReadOnly]
+
+    def get_queryset(self):
+        title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
+        return title.reviews
+
+    def perform_create(self, serializer):
+        pass
+
+
+class CommentViewset(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthorAdminModerOrReadOnly]
+
+    def get_queryset(self):
+        review = get_object_or_404(Review, pk=self.kwargs.get('review_id'))
+        return review.comments
+
+    def perform_create(self, serializer):
+        review = get_object_or_404(
+            Review,
+            pk=self.kwargs.get('review_id'),
+            title=self.kwargs.get('title_id')
+        )
+        serializer.save(author=self.request.user, review=review)

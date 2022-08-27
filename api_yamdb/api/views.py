@@ -21,7 +21,11 @@ from api.serializers import (
     ReviewSerializer,
     CommentSerializer
 )
-from api.permissions import AdminPermission, AdminSuperOrReadOnly, IsAuthorAdminModerOrReadOnly
+from api.permissions import (
+    AdminPermission,
+    AdminSuperOrReadOnly,
+    IsAuthorAdminModerOrReadOnly
+)
 from api.mixins import MixinSet
 from api.filters import TitleFilter
 from reviews.models import User, Category, Genre, Title, Review
@@ -31,16 +35,16 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AdminPermission,)
-    lookup_field = "username"
+    lookup_field = 'username'
 
     @action(
-        methods=["GET", "PATCH"],
+        methods=['GET', 'PATCH'],
         detail=False,
         permission_classes=[permissions.IsAuthenticated],
     )
     def me(self, request):
         serializer = UserSerializer(request.user)
-        if request.method == "PATCH":
+        if request.method == 'PATCH':
             serializer = UserSerializer(
                 request.user,
                 data=request.data,

@@ -1,13 +1,12 @@
 import datetime as dt
-from urllib import request
 
-from django.shortcuts import get_object_or_404
 from rest_framework import serializers, exceptions
 
 from reviews.models import User, Category, Genre, Title, Review, Comment
 
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         fields = (
             'username', 'email', 'first_name',
@@ -18,11 +17,13 @@ class UserSerializer(serializers.ModelSerializer):
     def validate_username(self, value):
         if value == 'me':
             raise serializers.ValidationError(
-                'Имя не может быть me!')
+                'Имя не может быть me!'
+            )
         return value
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
+
     class Meta:
         fields = ('username', 'email')
         model = User
@@ -30,7 +31,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate_username(self, value):
         if value == 'me':
             raise serializers.ValidationError(
-                'Имя не может быть me!')
+                'Имя не может быть me!'
+            )
         return value
 
 
@@ -40,12 +42,14 @@ class UserGetTokenSerializer(serializers.Serializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Category
         fields = ('name', 'slug')
 
 
 class GenreSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Genre
         fields = ('name', 'slug')
@@ -77,7 +81,14 @@ class TitlePostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Title
-        fields = ('id', 'name', 'description', 'category', 'genre', 'year')
+        fields = (
+            'id',
+            'name',
+            'description',
+            'category',
+            'genre',
+            'year'
+        )
 
     def validate_year(self, value):
         year = dt.date.today().year
@@ -103,7 +114,12 @@ class ReviewSerializer(serializers.ModelSerializer):
                 title=self.context['view'].kwargs.get('title_id'),
                 author=self.context['request'].user
             ).exists():
-                raise exceptions.ValidationError('Этот пользователь уже добавил отзыв для этого произведения.')
+                raise exceptions.ValidationError(
+                    'Данный пользователь уже добавил '
+                    'отзыв для этого произведения. '
+                    'Один пользователь может добавить '
+                    'только один отзыв.'
+                )
         return data
 
     class Meta:

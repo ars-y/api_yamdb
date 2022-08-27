@@ -1,6 +1,8 @@
 import datetime as dt
+from urllib import request
 
-from rest_framework import serializers
+from django.shortcuts import get_object_or_404
+from rest_framework import serializers, exceptions
 
 from reviews.models import User, Category, Genre, Title, Review, Comment
 
@@ -94,7 +96,16 @@ class ReviewSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field='name'
     )
-    
+
+    def validate(self, data):
+        if self.context['request'].method == 'POST':
+            if Review.objects.filter(
+                title=self.context['view'].kwargs.get('title_id'),
+                author=self.context['request'].user
+            ).exists():
+                raise exceptions.ValidationError('Этот пользователь уже добавил отзыв для этого произведения.')
+        return data
+
     class Meta:
         model = Review
         fields = '__all__'
@@ -105,7 +116,7 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field='username'
     )
-    title = serializers.SlugRelatedField(
+    review = serializers.SlugRelatedField(
         read_only=True,
         slug_field='text'
     )

@@ -83,5 +83,6 @@ $ python manage.py runserver
 Евгений Зубов, Найденов Константин, Арслан Ядов
 
 E-mail:
-[Naidenov Konstantin](mailto:naiden1898@yandex.ru?subject=API%20YaMDb)
+[Evgenij Zubov](mailto:valzubof@yandex.ru?subject=API%20YaMDb), 
+[Naidenov Konstantin](mailto:naiden1898@yandex.ru?subject=API%20YaMDb), 
 [Arslan Yadov](mailto:arslanyadov@yandex.ru?subject=API%20YaMDb)

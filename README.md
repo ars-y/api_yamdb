@@ -91,6 +91,12 @@ $ python manage.py runserver
 ```
 ## Выгрузка данных из csv файлов в БД
 ### Порядок выгрузки данных
+### Для Linux систем
+- Выполнить `make load` для выгрузки данных из csv файлов в БД
+``` bash
+$ make load
+```
+### Для Windows систем
 1. Таблица **User** файл users.csv
 ``` python
 $ python manage.py load_users_data

@@ -8,4 +8,5 @@ class MixinSet(
     mixins.DestroyModelMixin,
     GenericViewSet,
 ):
+    """Обработка POST-, GET-, DELETE-запросов"""
     pass

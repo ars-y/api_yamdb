@@ -23,8 +23,8 @@ from api.serializers import (
 )
 from api.permissions import (
     AdminPermission,
-    AdminSuperOrReadOnly,
-    IsAuthorAdminModerOrReadOnly
+    IsAuthorAdminModerOrReadOnly,
+    IsAdminOrReadOnly,
 )
 from api.mixins import MixinSet
 from api.filters import TitleFilter
@@ -100,7 +100,7 @@ class UserGetTokenView(APIView):
 class CategoryViewSet(MixinSet):
     queryset = Category.objects.all().order_by('id')
     serializer_class = CategorySerializer
-    permission_classes = (AdminSuperOrReadOnly,)
+    permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ['=name']
     lookup_field = 'slug'
@@ -109,7 +109,7 @@ class CategoryViewSet(MixinSet):
 class GenreViewSet(MixinSet):
     queryset = Genre.objects.all().order_by('id')
     serializer_class = GenreSerializer
-    permission_classes = (AdminSuperOrReadOnly,)
+    permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ['=name']
     lookup_field = 'slug'
@@ -119,7 +119,7 @@ class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.annotate(
         rating=Avg('reviews__score')
     ).all()
-    permission_classes = (AdminSuperOrReadOnly,)
+    permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)
     filterset_class = TitleFilter
 

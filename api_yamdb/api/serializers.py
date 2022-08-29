@@ -1,5 +1,3 @@
-import datetime as dt
-
 from rest_framework import serializers, exceptions
 
 from reviews.models import User, Category, Genre, Title, Review, Comment
@@ -45,21 +43,21 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('name', 'slug')
+        exclude = ('id',)
 
 
 class GenreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Genre
-        fields = ('name', 'slug')
+        exclude = ('id',)
 
 
 class TitleGetSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     genre = GenreSerializer(read_only=True, many=True)
     description = serializers.CharField(required=False)
-    rating = serializers.FloatField()
+    rating = serializers.IntegerField()
 
     class Meta:
         model = Title
@@ -89,12 +87,6 @@ class TitlePostSerializer(serializers.ModelSerializer):
             'genre',
             'year'
         )
-
-    def validate_year(self, value):
-        year = dt.date.today().year
-        if value > year:
-            raise serializers.ValidationError('Проверьте указанный год')
-        return value
 
 
 class ReviewSerializer(serializers.ModelSerializer):

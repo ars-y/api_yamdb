@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
+
+import datetime as dt
 
 from core.models import CreatedModel
 
@@ -101,6 +104,13 @@ class Genre(models.Model):
         return self.name
 
 
+def validate_year(value):
+    year = dt.date.today().year
+    if value > year:
+        raise ValidationError('Проверьте указанный год')
+    return value
+
+
 class Title(models.Model):
     """Модель произведения."""
     name = models.CharField(
@@ -108,6 +118,7 @@ class Title(models.Model):
         max_length=200
     )
     year = models.PositiveIntegerField(
+        validators=[validate_year],
         verbose_name='Год',
         db_index=True
     )

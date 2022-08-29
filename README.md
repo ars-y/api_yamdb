@@ -57,12 +57,16 @@ curl -H 'Accept: application/json' http://127.0.0.1:8000/api/v1/titles/
 SECRET_KEY = 'Your_secret_key'
 DEBUG = True # for dev-mode
 ```
-## Для Linux систем
-- Выполнить `make setup` в директории проекта
+### Для Linux систем
+- Выполнить `make help` для просмотра всех доступных команд
+``` bash
+$ make help
+```
+- Выполнить `make setup` для установки зависимостей и запуска проекта
 ``` bash
 $ make setup
 ```
-## Для Windows систем
+### Для Windows систем
 - Установить и активировать виртуальное окружение
 ``` bash
 $ python -m venv venv

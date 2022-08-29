@@ -36,7 +36,7 @@ curl -H 'Accept: application/json' http://127.0.0.1:8000/api/v1/titles/
 * Регистрируйтесь.
 * Создавайте отзывы на любые произведения.
 * Делитесь своим мнением в комментариях к другим отзывам.
-### Регистариця пользователей
+### Регистрация пользователей
 1. Пользователь отправляет POST-запрос на добавление нового пользователя с параметрами `email` и `username` на эндпоинт `/api/v1/auth/signup/`.
 2. **YaMDB** отправляет письмо с кодом подтверждения (`confirmation_code`) на адрес email.
 3. Пользователь отправляет POST-запрос с параметрами username и confirmation_code на эндпоинт `/api/v1/auth/token/`, в ответе на запрос ему приходит token (JWT-токен).
@@ -57,6 +57,12 @@ curl -H 'Accept: application/json' http://127.0.0.1:8000/api/v1/titles/
 SECRET_KEY = 'Your_secret_key'
 DEBUG = True # for dev-mode
 ```
+## Для Linux систем
+- Выполнить `make setup` в директории проекта
+``` bash
+$ make setup
+```
+## Для Windows систем
 - Установить и активировать виртуальное окружение
 ``` bash
 $ python -m venv venv

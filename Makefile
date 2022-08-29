@@ -22,7 +22,7 @@ venv:
 
 install: ## установка/обновление pip
 install:
-	python -m pip install --upgrade pip
+	python3 -m pip install --upgrade pip
 
 init: ## установка зависимостей из requirements.txt
 init:
@@ -30,8 +30,8 @@ init:
 
 run: ## выполнить миграции и запустить сервер
 run:
-	cd $(MANAGE_PATH); python manage.py migrate
-	cd $(MANAGE_PATH); python manage.py runserver
+	cd $(MANAGE_PATH); python3 manage.py migrate
+	cd $(MANAGE_PATH); python3 manage.py runserver
 
 leave: ## очистка и деактивация виртуального окружения
 leave: clean

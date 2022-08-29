@@ -115,13 +115,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
-ALREDY_LOADED_ERROR_MESSAGE = """
-Если необходимо перезагрузить данные из csv файла,
-то сначала нужно удалить файл db.sqlite3,
-после запустить команду `python manage.py migrate`
-для создания новой, пустой БД.
-"""
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',

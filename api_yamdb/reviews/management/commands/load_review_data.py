@@ -2,15 +2,22 @@ from csv import DictReader
 from django.core.management import BaseCommand
 
 from reviews.models import Review, User, Title
-from api_yamdb.settings import ALREDY_LOADED_ERROR_MESSAGE
+
+
+filename = 'review'
+ALREDY_LOADED_ERROR_MESSAGE = """
+Если необходимо перезагрузить данные из csv файла,
+то сначала нужно удалить таблицу {} через администратора.
+После удаления нужной таблицы можно снова выполнить команду по загрузке данных..
+""".format(filename)
 
 
 class Command(BaseCommand):
-    help = "Loads data from review.csv"
+    help = f'Loads data from {filename}.csv'
 
     def handle(self, *args, **options):
         if Review.objects.exists():
-            self.stdout.write('review data already exiting.')
+            self.stdout.write(f'{filename} data already exiting.')
             self.stdout.write(ALREDY_LOADED_ERROR_MESSAGE)
             return
 

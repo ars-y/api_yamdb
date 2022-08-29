@@ -89,6 +89,36 @@ $ python manage.py migrate
 ``` bash
 $ python manage.py runserver
 ```
+## Выгрузка данных из csv файлов в БД
+### Порядок выгрузки данных
+1. Таблица **User** файл users.csv
+``` python
+$ python manage.py load_users_data
+```
+2. Таблица **Category** файл category.csv
+``` python
+$ python manage.py load_category_data
+```
+3. Таблица **Genre** файл genre.csv
+``` python
+$ python manage.py load_genre_data
+```
+4. Таблица **Title** файл titles.csv
+``` python
+$ python manage.py load_title_data
+```
+5. Таблица **GenreTitle** файл genre_title.csv
+``` python
+$ python manage.py load_genre_title_data
+```
+6. Таблица **Review** файл review.csv
+``` python
+$ python manage.py load_review_data
+```
+7. Таблица **Comment** файл comments.csv
+``` python
+$ python manage.py load_comments_data
+```
 ## Команда разработчиков
 Евгений Зубов, Найденов Константин, Арслан Ядов
 

@@ -10,8 +10,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if Review.objects.exists():
-            print('review data already exiting.')
-            print(ALREDY_LOADED_ERROR_MESSAGE)
+            self.stdout.write('review data already exiting.')
+            self.stdout.write(ALREDY_LOADED_ERROR_MESSAGE)
             return
 
         for row in DictReader(

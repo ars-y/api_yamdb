@@ -10,8 +10,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if Category.objects.exists():
-            print('category data already exiting.')
-            print(ALREDY_LOADED_ERROR_MESSAGE)
+            self.stdout.write('category data already exiting.')
+            self.stdout.write(ALREDY_LOADED_ERROR_MESSAGE)
             return
 
         for row in DictReader(

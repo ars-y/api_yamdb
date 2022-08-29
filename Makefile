@@ -1,5 +1,6 @@
 VENV_PATH='venv/bin/activate'
 ENVIRONMENT_VARIABLE_FILE='.venv'
+MANAGE_PATH='./api_yamdb'
 
 define find.functions
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -10,13 +11,27 @@ help: ## вывод доступных команд
 	@echo ''
 	$(call find.functions)
 
-setup: ## установка и активация виртуального окружения. установка/обновление pip и установка зависимостей
-setup:
+setup: ## выполнить команды venv install init run
+setup: venv install init run
+
+venv: ## установка и активация виртуального окружения
+venv:
 	python3 -m venv venv
 	source $(VENV_PATH)
 	source $(ENVIRONMENT_VARIABLE_FILE)
-	python3 -m pip install --upgrade pip
+
+install: ## установка/обновление pip
+install:
+	python -m pip install --upgrade pip
+
+init: ## установка зависимостей из requirements.txt
+init:
 	pip install -r requirements.txt
+
+run: ## выполнить миграции и запустить сервер
+run:
+	cd $(MANAGE_PATH); python manage.py migrate
+	cd $(MANAGE_PATH); python manage.py runserver
 
 leave: ## очистка и деактивация виртуального окружения
 leave: clean

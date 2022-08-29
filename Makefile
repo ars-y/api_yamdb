@@ -36,13 +36,13 @@ run:
 
 load: ## загрузка данных из csv файлов в БД
 load:
-	cd $(MANAGE_PATH); python manage.py load_users_data
-	cd $(MANAGE_PATH); python manage.py load_category_data
-	cd $(MANAGE_PATH); python manage.py load_genre_data
-	cd $(MANAGE_PATH); python manage.py load_title_data
-	cd $(MANAGE_PATH); python manage.py load_genre_title_data
-	cd $(MANAGE_PATH); python manage.py load_review_data
-	cd $(MANAGE_PATH); python manage.py load_comments_data
+	cd $(MANAGE_PATH); python3 manage.py load_users_data
+	cd $(MANAGE_PATH); python3 manage.py load_category_data
+	cd $(MANAGE_PATH); python3 manage.py load_genre_data
+	cd $(MANAGE_PATH); python3 manage.py load_title_data
+	cd $(MANAGE_PATH); python3 manage.py load_genre_title_data
+	cd $(MANAGE_PATH); python3 manage.py load_review_data
+	cd $(MANAGE_PATH); python3 manage.py load_comments_data
 
 leave: ## очистка и деактивация виртуального окружения
 leave: clean

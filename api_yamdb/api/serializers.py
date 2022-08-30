@@ -19,7 +19,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('username', 'email')
         model = User
-        
+
         validators = [
             UniqueTogetherValidator(
                 queryset=User.objects.all(),

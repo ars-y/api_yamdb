@@ -1,8 +1,7 @@
-import datetime as dt
-
 from rest_framework import serializers, exceptions
 
 from reviews.models import User, Category, Genre, Title, Review, Comment
+from rest_framework.validators import UniqueTogetherValidator
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -14,13 +13,6 @@ class UserSerializer(serializers.ModelSerializer):
         )
         model = User
 
-    def validate_username(self, value):
-        if value == 'me':
-            raise serializers.ValidationError(
-                'Имя не может быть me!'
-            )
-        return value
-
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
 
@@ -28,10 +20,19 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields = ('username', 'email')
         model = User
 
+        validators = [
+            UniqueTogetherValidator(
+                queryset=User.objects.all(),
+                fields=['username', 'email'],
+            )
+        ]
+
     def validate_username(self, value):
-        if value == 'me':
+        if value.lower() == 'me':
             raise serializers.ValidationError(
-                'Имя не может быть me!'
+                {
+                    'username': ('Такое имя уже занято!')
+                }
             )
         return value
 
@@ -45,26 +46,33 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('name', 'slug')
+        exclude = ('id',)
 
 
 class GenreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Genre
-        fields = ('name', 'slug')
+        exclude = ('id',)
 
 
 class TitleGetSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     genre = GenreSerializer(read_only=True, many=True)
     description = serializers.CharField(required=False)
-    rating = serializers.FloatField()
+    rating = serializers.IntegerField()
 
     class Meta:
         model = Title
-        fields = ('id', 'name', 'description', 'category', 'genre', 'year',
-                  'rating')
+        fields = (
+            'id',
+            'name',
+            'description',
+            'category',
+            'genre',
+            'year',
+            'rating'
+        )
         read_only_fields = ('__all__',)
 
 
@@ -89,12 +97,6 @@ class TitlePostSerializer(serializers.ModelSerializer):
             'genre',
             'year'
         )
-
-    def validate_year(self, value):
-        year = dt.date.today().year
-        if value > year:
-            raise serializers.ValidationError('Проверьте указанный год')
-        return value
 
 
 class ReviewSerializer(serializers.ModelSerializer):

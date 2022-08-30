@@ -9,19 +9,15 @@ from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = strtobool(os.getenv('DEBUG', 'False'))
 
 ALLOWED_HOSTS = ['*']
 
 
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -70,7 +66,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'api_yamdb.wsgi.application'
 
 
-# Database
 
 DATABASES = {
     'default': {
@@ -80,7 +75,6 @@ DATABASES = {
 }
 
 
-# Password validation
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -98,7 +92,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
 
 LANGUAGE_CODE = 'en-us'
 
@@ -111,7 +104,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
 
 STATIC_URL = '/static/'
 
@@ -121,14 +113,9 @@ AUTH_USER_MODEL = 'reviews.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+EMAIL_ROBOT = 'yamdb.host@yandex.ru'
 
-ALREDY_LOADED_ERROR_MESSAGE = """
-Если необходимо перезагрузить данные из csv файла,
-то сначала нужно удалить файл db.sqlite3,
-после запустить команду `python manage.py migrate`
-для создания новой, пустой БД.
-"""
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

@@ -10,7 +10,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from api.serializers import (
+from api.v1.serializers import (
     UserSerializer,
     UserRegistrationSerializer,
     UserGetTokenSerializer,
@@ -21,14 +21,15 @@ from api.serializers import (
     ReviewSerializer,
     CommentSerializer
 )
-from api.permissions import (
+from api.v1.permissions import (
     AdminPermission,
-    AdminSuperOrReadOnly,
-    IsAuthorAdminModerOrReadOnly
+    IsAuthorAdminModerOrReadOnly,
+    IsAdminOrReadOnly,
 )
-from api.mixins import MixinSet
-from api.filters import TitleFilter
+from api.v1.mixins import MixinSet
+from api.v1.filters import TitleFilter
 from reviews.models import User, Category, Genre, Title, Review
+from api_yamdb.settings import EMAIL_ROBOT
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -43,9 +44,9 @@ class UserViewSet(viewsets.ModelViewSet):
         permission_classes=[permissions.IsAuthenticated],
     )
     def me(self, request):
-        serializer = UserSerializer(request.user)
+        serializer = self.get_serializer(request.user)
         if request.method == 'PATCH':
-            serializer = UserSerializer(
+            serializer = self.get_serializer(
                 request.user,
                 data=request.data,
                 partial=True
@@ -59,23 +60,22 @@ class UserViewSet(viewsets.ModelViewSet):
 class UserRegistrationView(APIView):
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             user = serializer.save()
             confirmation_code = default_token_generator.make_token(user)
             send_mail(
                 'Код подтверждения регистрации',
                 f'{confirmation_code}',
-                'yamdb.host@yandex.ru',
+                EMAIL_ROBOT,
                 [serializer.validated_data.get('email')],
             )
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserGetTokenView(APIView):
     def post(self, request):
         serializer = UserGetTokenSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             username = serializer.validated_data.get('username')
             user = get_object_or_404(User, username=username)
             token = serializer.validated_data.get('confirmation_code')
@@ -91,16 +91,12 @@ class UserGetTokenView(APIView):
                 {'token': str(refresh.access_token)},
                 status=status.HTTP_200_OK
             )
-        return Response(
-            serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST
-        )
 
 
 class CategoryViewSet(MixinSet):
     queryset = Category.objects.all().order_by('id')
     serializer_class = CategorySerializer
-    permission_classes = (AdminSuperOrReadOnly,)
+    permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ['=name']
     lookup_field = 'slug'
@@ -109,7 +105,7 @@ class CategoryViewSet(MixinSet):
 class GenreViewSet(MixinSet):
     queryset = Genre.objects.all().order_by('id')
     serializer_class = GenreSerializer
-    permission_classes = (AdminSuperOrReadOnly,)
+    permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ['=name']
     lookup_field = 'slug'
@@ -119,7 +115,7 @@ class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.annotate(
         rating=Avg('reviews__score')
     ).all()
-    permission_classes = (AdminSuperOrReadOnly,)
+    permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)
     filterset_class = TitleFilter
 

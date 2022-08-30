@@ -8,3 +8,4 @@ pytest-pythonpath==0.7.3
 python-dotenv
 djangorestframework-simplejwt
 django-filter
+tqdm

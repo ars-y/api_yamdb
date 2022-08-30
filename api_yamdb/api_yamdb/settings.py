@@ -121,6 +121,8 @@ AUTH_USER_MODEL = 'reviews.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 
+EMAIL_ROBOT = 'yamdb.host@yandex.ru'
+
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 ALREDY_LOADED_ERROR_MESSAGE = """

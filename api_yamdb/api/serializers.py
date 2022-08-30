@@ -3,6 +3,7 @@ import datetime as dt
 from rest_framework import serializers, exceptions
 
 from reviews.models import User, Category, Genre, Title, Review, Comment
+from rest_framework.validators import UniqueTogetherValidator
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -14,24 +15,23 @@ class UserSerializer(serializers.ModelSerializer):
         )
         model = User
 
-    def validate_username(self, value):
-        if value == 'me':
-            raise serializers.ValidationError(
-                'Имя не может быть me!'
-            )
-        return value
-
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         fields = ('username', 'email')
         model = User
+        validators = [
+            UniqueTogetherValidator(
+                queryset=User.objects.all(),
+                fields=['username', 'email'],
+            )
+        ]
 
     def validate_username(self, value):
-        if value == 'me':
+        if value.lower() == 'me':
             raise serializers.ValidationError(
-                'Имя не может быть me!'
+                'Такое имя уже занято!'
             )
         return value
 

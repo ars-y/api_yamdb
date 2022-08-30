@@ -1,21 +1,37 @@
+import time
+
 from csv import DictReader
 from django.core.management import BaseCommand
 
+from tqdm import tqdm
+
 from reviews.models import Category
-from api_yamdb.settings import ALREDY_LOADED_ERROR_MESSAGE
+
+
+filename = 'category'
+ALREDY_LOADED_ERROR_MESSAGE = """
+Если необходимо перезагрузить данные из csv файла,
+то сначала нужно удалить таблицу {} через администратора.
+После удаления нужной таблицы,
+можно снова выполнить команду по загрузке данных.
+""".format(filename)
 
 
 class Command(BaseCommand):
-    help = "Loads data from category.csv"
+    help = f'Loads data from {filename}.csv'
 
     def handle(self, *args, **options):
         if Category.objects.exists():
-            print('category data already exiting.')
-            print(ALREDY_LOADED_ERROR_MESSAGE)
+            self.stdout.write(f'{filename} data already exiting.')
+            self.stdout.write(ALREDY_LOADED_ERROR_MESSAGE)
             return
 
-        for row in DictReader(
-            open('static/data/category.csv', 'r', encoding='utf-8')
+        for row in tqdm(
+            list(
+                DictReader(
+                    open('static/data/category.csv', 'r', encoding='utf-8')
+                )
+            )
         ):
             review = Category(
                 id=row['id'],
@@ -23,3 +39,4 @@ class Command(BaseCommand):
                 slug=row['slug']
             )
             review.save()
+            time.sleep(0.10)

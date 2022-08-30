@@ -1,4 +1,5 @@
 import datetime as dt
+from xml.dom import ValidationErr
 
 from rest_framework import serializers, exceptions
 
@@ -21,6 +22,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('username', 'email')
         model = User
+        
         validators = [
             UniqueTogetherValidator(
                 queryset=User.objects.all(),
@@ -31,7 +33,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate_username(self, value):
         if value.lower() == 'me':
             raise serializers.ValidationError(
-                'Такое имя уже занято!'
+                {
+                    'username': ('Такое имя уже занято!')
+            }
             )
         return value
 

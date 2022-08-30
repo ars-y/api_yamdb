@@ -1,5 +1,9 @@
+import time
+
 from csv import DictReader
 from django.core.management import BaseCommand
+
+from tqdm import tqdm
 
 from reviews.models import User
 
@@ -8,7 +12,8 @@ filename = 'users'
 ALREDY_LOADED_ERROR_MESSAGE = """
 Если необходимо перезагрузить данные из csv файла,
 то сначала нужно удалить таблицу {} через администратора.
-После удаления нужной таблицы можно снова выполнить команду по загрузке данных..
+После удаления нужной таблицы,
+можно снова выполнить команду по загрузке данных.
 """.format(filename)
 
 
@@ -21,8 +26,12 @@ class Command(BaseCommand):
             self.stdout.write(ALREDY_LOADED_ERROR_MESSAGE)
             return
 
-        for row in DictReader(
-            open('static/data/users.csv', 'r', encoding='utf-8')
+        for row in tqdm(
+            list(
+                DictReader(
+                    open('static/data/users.csv', 'r', encoding='utf-8')
+                )
+            )
         ):
             review = User(
                 id=row['id'],
@@ -34,3 +43,4 @@ class Command(BaseCommand):
                 last_name=row['last_name']
             )
             review.save()
+            time.sleep(0.10)

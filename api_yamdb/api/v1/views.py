@@ -10,7 +10,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from api.serializers import (
+from api.v1.serializers import (
     UserSerializer,
     UserRegistrationSerializer,
     UserGetTokenSerializer,
@@ -21,13 +21,13 @@ from api.serializers import (
     ReviewSerializer,
     CommentSerializer
 )
-from api.permissions import (
+from api.v1.permissions import (
     AdminPermission,
     IsAuthorAdminModerOrReadOnly,
     IsAdminOrReadOnly,
 )
-from api.mixins import MixinSet
-from api.filters import TitleFilter
+from api.v1.mixins import MixinSet
+from api.v1.filters import TitleFilter
 from reviews.models import User, Category, Genre, Title, Review
 from api_yamdb.settings import EMAIL_ROBOT
 

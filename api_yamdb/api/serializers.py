@@ -32,7 +32,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {
                     'username': ('Такое имя уже занято!')
-            }
+                }
             )
         return value
 
@@ -64,8 +64,15 @@ class TitleGetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Title
-        fields = ('id', 'name', 'description', 'category', 'genre', 'year',
-                  'rating')
+        fields = (
+            'id',
+            'name',
+            'description',
+            'category',
+            'genre',
+            'year',
+            'rating'
+        )
         read_only_fields = ('__all__',)
 
 

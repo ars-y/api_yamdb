@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from core.models import CreatedModel
-from validators import validate_year
+from reviews.validators import validate_year
 
 USER = 'user'
 MODERATOR = 'moderator'

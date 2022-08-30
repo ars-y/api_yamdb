@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from core.models import CreatedModel
+from validators import validate_year
 
 USER = 'user'
 MODERATOR = 'moderator'
@@ -108,6 +109,7 @@ class Title(models.Model):
         max_length=200
     )
     year = models.PositiveIntegerField(
+        validators=[validate_year],
         verbose_name='Год',
         db_index=True
     )

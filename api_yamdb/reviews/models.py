@@ -1,11 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.core.exceptions import ValidationError
-
-import datetime as dt
 
 from core.models import CreatedModel
+from validators import validate_year
 
 USER = 'user'
 MODERATOR = 'moderator'
@@ -102,13 +100,6 @@ class Genre(models.Model):
 
     def __str__(self):
         return self.name
-
-
-def validate_year(value):
-    year = dt.date.today().year
-    if value > year:
-        raise ValidationError('Проверьте указанный год')
-    return value
 
 
 class Title(models.Model):

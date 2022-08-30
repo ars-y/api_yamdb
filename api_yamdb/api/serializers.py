@@ -1,5 +1,4 @@
 import datetime as dt
-from xml.dom import ValidationErr
 
 from rest_framework import serializers, exceptions
 

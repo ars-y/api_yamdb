@@ -1,12 +1,18 @@
-from rest_framework import mixins
-from rest_framework.viewsets import GenericViewSet
+from rest_framework import mixins, viewsets
 
 
-class MixinSet(
+class BaseMixinModelViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.DestroyModelMixin,
-    GenericViewSet,
+    viewsets.GenericViewSet
 ):
-    """Обработка POST-, GET-, DELETE-запросов"""
+    """
+    Базовый класс, наследник от набора миксинов,
+    представляющий обработку запросов:
+    - POST (CreateModelMixin),
+    - GET (ListModelMixin),
+    - DELETE (DestroyModelMixin)
+    и GeneriсViewSet для роутинга этих запросов.
+    """
     pass

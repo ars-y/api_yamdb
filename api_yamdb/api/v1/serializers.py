@@ -31,7 +31,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         if value.lower() == 'me':
             raise serializers.ValidationError(
                 {
-                    'username': ('Такое имя уже занято!')
+                    'username': ('Данное имя зарезервированно!')
                 }
             )
         return value

@@ -26,7 +26,7 @@ from api.v1.permissions import (
     IsAuthorAdminModerOrReadOnly,
     IsAdminOrReadOnly,
 )
-from api.v1.mixins import MixinSet
+from api.v1.mixins import BaseMixinModelViewSet
 from api.v1.filters import TitleFilter
 from reviews.models import User, Category, Genre, Title, Review
 from api_yamdb.settings import EMAIL_ROBOT
@@ -93,7 +93,7 @@ class UserGetTokenView(APIView):
             )
 
 
-class CategoryViewSet(MixinSet):
+class CategoryViewSet(BaseMixinModelViewSet):
     queryset = Category.objects.all().order_by('id')
     serializer_class = CategorySerializer
     permission_classes = (IsAdminOrReadOnly,)
@@ -102,7 +102,7 @@ class CategoryViewSet(MixinSet):
     lookup_field = 'slug'
 
 
-class GenreViewSet(MixinSet):
+class GenreViewSet(BaseMixinModelViewSet):
     queryset = Genre.objects.all().order_by('id')
     serializer_class = GenreSerializer
     permission_classes = (IsAdminOrReadOnly,)

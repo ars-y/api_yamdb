@@ -121,3 +121,12 @@ SIMPLE_JWT = {
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+RESERVED_USERNAME_LIST = (
+    'superuser',
+    'admin',
+    'administrator',
+    'moderator',
+    'moder',
+    'me',
+)

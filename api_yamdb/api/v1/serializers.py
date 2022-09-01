@@ -1,15 +1,20 @@
 from rest_framework import serializers, exceptions
+from rest_framework.validators import UniqueTogetherValidator
 
 from reviews.models import User, Category, Genre, Title, Review, Comment
-from rest_framework.validators import UniqueTogetherValidator
+from api_yamdb.settings import RESERVED_USERNAME_LIST
 
 
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         fields = (
-            'username', 'email', 'first_name',
-            'last_name', 'bio', 'role'
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+            'bio',
+            'role'
         )
         model = User
 
@@ -28,7 +33,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         ]
 
     def validate_username(self, value):
-        if value.lower() == 'me':
+        if value.lower() in RESERVED_USERNAME_LIST:
             raise serializers.ValidationError(
                 {
                     'username': ('Данное имя зарезервированно!')

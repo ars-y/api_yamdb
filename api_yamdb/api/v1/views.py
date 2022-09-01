@@ -94,7 +94,7 @@ class UserGetTokenView(APIView):
 
 
 class CategoryViewSet(BaseMixinModelViewSet):
-    queryset = Category.objects.all().order_by('id')
+    queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
@@ -103,7 +103,7 @@ class CategoryViewSet(BaseMixinModelViewSet):
 
 
 class GenreViewSet(BaseMixinModelViewSet):
-    queryset = Genre.objects.all().order_by('id')
+    queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (filters.SearchFilter,)

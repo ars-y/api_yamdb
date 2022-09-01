@@ -5,6 +5,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from core.models import CreatedModel
 from reviews.validators import validate_year
 
+
 USER = 'user'
 MODERATOR = 'moderator'
 ADMIN = 'admin'

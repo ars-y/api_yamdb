@@ -1,5 +1,4 @@
-VENV_PATH='venv/bin/activate'
-ENVIRONMENT_VARIABLE_FILE='.venv'
+VENV=venv
 MANAGE_PATH='./api_yamdb'
 LOAD_DATA_PATH='./api_yamdb/reviews/management/commands'
 
@@ -17,13 +16,12 @@ setup: venv install init run
 
 venv: ## установка и активация виртуального окружения
 venv:
-	python3 -m venv venv
-	source $(VENV_PATH)
-	source $(ENVIRONMENT_VARIABLE_FILE)
+	python3 -m venv $(VENV)
+	. $(VENV)/bin/activate
 
 install: ## установка/обновление pip
 install:
-	python3 -m pip install --upgrade pip
+	pip install -U pip
 
 init: ## установка зависимостей из requirements.txt
 init:

@@ -131,4 +131,4 @@ $ python manage.py load_comments_data
 E-mail:
 [Evgenij Zubov](mailto:valzubof@yandex.ru?subject=API%20YaMDb), 
 [Naidenov Konstantin](mailto:naiden1898@yandex.ru?subject=API%20YaMDb), 
-[Arslan Yadov](mailto:arslanyadov@yandex.ru?subject=API%20YaMDb)
+[Arslan Yadov](mailto:arsyy90@gmail.com?subject=API%20YaMDb)

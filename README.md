@@ -48,9 +48,9 @@ curl -H 'Accept: application/json' http://127.0.0.1:8000/api/v1/titles/
 * **Администратор** (`admin`) — полные права на управление всем контентом проекта. Может создавать и удалять произведения, категории и жанры. Может назначать роли пользователям.
 * **Суперюзер Django** — обладет правами администратора (`admin`)
 ### Технологии
-* Python 3.7.0
-* Django 2.2.16
-* Django DRF 3.12.4
+* [Python 3.7.0](https://docs.python.org/3.7/)
+* [Django 2.2.16](https://docs.djangoproject.com/en/4.1/)
+* [Django REST Framework 3.12.4](https://www.django-rest-framework.org/)
 ## Запуск проекта в dev-режиме
 - В корневой директории проекта создать файл ```.env``` и установить свои значения для ```SECRET_KEY``` и ```DEBUG```
 ``` python
